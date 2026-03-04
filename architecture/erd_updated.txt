@@ -1,0 +1,99 @@
+@startuml
+!theme plain
+skinparam linetype ortho
+
+' 1. USER & ACCESS CONTROL
+entity "User" as user {
+  * id : UUID [PK]
+  --
+  * username : VARCHAR
+  * role_id : FK
+  * created_at : TIMESTAMP
+}
+
+entity "Role" as role {
+  * id : INTEGER [PK]
+  --
+  * type : VARCHAR (Admin, Author, Reviewer)
+}
+
+' 2. TEMPLATE & VERSIONING
+entity "JSON_Template" as template {
+  * id : UUID [PK]
+  --
+  * name : VARCHAR
+  * owner_id : FK
+  * created_at : TIMESTAMP
+}
+
+entity "JSON_Version" as version {
+  * id : UUID [PK]
+  --
+  * template_id : FK
+  * parent_version_id : FK (Tracks V1 -> V1.1 evolution)
+  * author_id : FK
+  * status_id : FK
+  * version_label : VARCHAR
+  * json_content : JSONB
+  * created_at : TIMESTAMP
+  * approved_at : TIMESTAMP
+  * rejected_at : TIMESTAMP
+  * published_at : TIMESTAMP
+}
+
+' 3. THREADED COMMENTS (The "Parent/Reply" Logic)
+entity "Comment" as comment {
+  * id : UUID [PK]
+  --
+  * parent_comment_id : FK (Self-Ref for Threading/Replies)
+  * user_id : FK
+  * version_id : FK (Optional)
+  * text : TEXT
+  * created_at : TIMESTAMP
+}
+
+' 4. REVIEW WORKFLOW
+entity "Review_Request" as request {
+  * id : UUID [PK]
+  --
+  * version_id : FK
+  * requester_id : FK
+  * created_at : TIMESTAMP
+}
+
+entity "Review_Decision" as decision {
+  * id : UUID [PK]
+  --
+  * request_id : FK
+  * reviewer_id : FK
+  * status : ENUM (Acknowledged, Accepted, Declined)
+  * decided_at : TIMESTAMP
+}
+
+' 5. SYSTEM-WIDE AUDITING
+entity "System_Audit_Log" as audit {
+  * id : UUID [PK]
+  --
+  * user_id : FK
+  * action_type : VARCHAR
+  * target_id : UUID
+  * timestamp : TIMESTAMP
+}
+
+' Relationships
+user }|--|| role
+template }|--|| user : "owned by"
+template ||--|{ version
+version }|--|| user : "authored by"
+version ||--o{ version : "evolves from"
+version ||--o{ request
+request ||--o{ decision
+
+' Threaded Comment Relationships
+comment ||--o{ comment : "replies to"
+version ||--o{ comment : "has discussion"
+user ||--o{ comment : "posts"
+
+user ||--o{ audit : "performs"
+
+@endum
