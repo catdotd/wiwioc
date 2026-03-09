@@ -10,15 +10,15 @@ The backend is built with **Django (v5.2)** and **Django REST Framework (DRF)**.
 ## 2. File Architecture & Directory Map
 Here is where every major component of the backend "lives":
 
-- **Core Configuration**: [backend/config/](backend/config/)
+- **Core Configuration**: [backend/config/](../backend/config/)
   - `settings.py`: Includes JWT, Database, and RBAC configurations.
   - `urls.py`: Main routing, including JWT token paths (`/api/token/`) and a root redirect to `/admin/`.
 
-- **User & Role System**: [backend/users/](backend/users/)
+- **User & Role System**: [backend/users/](../backend/users/)
   - `models.py`: Defines the `Role` and `Profile` models (links Django Users to Roles like Admin, Author, Reviewer).
   - `admin.py`: Registers User/Profile management in the Dashboard.
 
-- **Templates, Versions, & Workflow**: [backend/templates/](backend/templates/)
+- **Templates, Versions, & Workflow**: [backend/templates/](../backend/templates/)
   - `models.py`: The "Brain." Contains `JSON_Template`, `JSON_Version`, `Comment`, `Review_Request`, and `Review_Decision`.
   - `views.py`: API logic (CRUD operations) and ownership protection (`perform_create`).
   - `serializers.py`: Data transformation layer (converts DB records to JSON for the frontend).
