@@ -26,6 +26,9 @@ class CommentSerializer(serializers.ModelSerializer):
         return []
 
 class ReviewDecisionSerializer(serializers.ModelSerializer):
+    reviewer = serializers.HiddenField(
+        default=serializers.CurrentUserDefault()
+    )
     reviewer_detail = UserSerializer(source='reviewer', read_only=True)
 
     class Meta:
@@ -56,6 +59,9 @@ class JSONVersionSerializer(serializers.ModelSerializer):
         ]
 
 class JSONTemplateSerializer(serializers.ModelSerializer):
+    owner = serializers.HiddenField(
+        default=serializers.CurrentUserDefault()
+    )
     owner_detail = UserSerializer(source='owner', read_only=True)
     versions = JSONVersionSerializer(many=True, read_only=True)
 
