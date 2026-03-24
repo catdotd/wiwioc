@@ -4,25 +4,25 @@ A web-based system for structured template governance and review.\
 Built with **React (Vite)** and **Django REST Framework** using
 **PostgreSQL**.
 
-------------------------------------------------------------------------
+---
 
 ## Tech Stack
 
 ### Frontend
 
--   React
--   Vite
+- React
+- Vite
 
 ### Backend
 
--   Django
--   Django REST Framework
+- Django
+- Django REST Framework
 
 ### Database
 
--   PostgreSQL
+- PostgreSQL
 
-------------------------------------------------------------------------
+---
 
 ## Project Structure
 
@@ -38,24 +38,24 @@ Built with **React (Vite)** and **Django REST Framework** using
     │
     └── README.md
 
-------------------------------------------------------------------------
+---
 
 # Local Development Setup
 
 ## 1. Clone the Repository
 
-``` bash
+```bash
 git clone <repo-url>
 cd VisualTemplateReviewer
 ```
 
-------------------------------------------------------------------------
+---
 
 # Backend Setup (Django + PostgreSQL)
 
 ## 2. Create and Activate Virtual Environment
 
-``` bash
+```bash
 cd backend
 python3 -m venv .venv
 source .venv/bin/activate
@@ -63,49 +63,49 @@ source .venv/bin/activate
 
 **Windows:**
 
-``` bash
+```bash
 .venv\Scripts\activate
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 3. Install Dependencies
 
-``` bash
+```bash
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 4. Install PostgreSQL (if not already installed)
 
 **Mac (Homebrew):**
 
-``` bash
+```bash
 brew install postgresql
 brew services start postgresql
 ```
 
 Verify installation:
 
-``` bash
+```bash
 psql --version
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 5. Create Local Database
 
 Open PostgreSQL:
 
-``` bash
+```bash
 psql postgres
 ```
 
 Then run:
 
-``` sql
+```sql
 CREATE DATABASE visual_template_reviewer;
 
 CREATE USER vtr_user WITH PASSWORD 'password';
@@ -121,10 +121,12 @@ GRANT ALL PRIVILEGES ON DATABASE visual_template_reviewer TO vtr_user;
 ALTER SCHEMA public OWNER TO vtr_user;
 GRANT USAGE, CREATE ON SCHEMA public TO vtr_user;
 
+ALTER ROLE vtr_user CREATEDB;
+
 \q
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 6. Configure Environment Variables
 
@@ -141,7 +143,7 @@ Ensure `.env` is included in `.gitignore`.
 
 Example `settings.py` database configuration:
 
-``` python
+```python
 import os
 
 DATABASES = {
@@ -156,27 +158,27 @@ DATABASES = {
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 7. Run Migrations
 
-``` bash
+```bash
 python3 manage.py migrate
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 8. Create Superuser (Optional)
 
-``` bash
+```bash
 python3 manage.py createsuperuser
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 9. Start Backend Server
 
-``` bash
+```bash
 python3 manage.py runserver
 ```
 
@@ -184,7 +186,7 @@ Backend runs at:
 
     http://127.0.0.1:8000
 
-------------------------------------------------------------------------
+---
 
 # Frontend Setup
 
@@ -192,16 +194,16 @@ Open a new terminal.
 
 ## 10. Install Dependencies
 
-``` bash
+```bash
 cd frontend
 npm install
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 11. Start Development Server
 
-``` bash
+```bash
 npm run dev
 ```
 
@@ -209,36 +211,36 @@ Frontend runs at:
 
     http://localhost:5173
 
-------------------------------------------------------------------------
+---
 
 # Development Guidelines
 
--   Always activate `.venv` before backend work.
--   Do not commit:
-    -   `backend/.venv/`
-    -   `backend/.env`
-    -   `frontend/node_modules/`
--   Ensure PostgreSQL is running before running migrations.
+- Always activate `.venv` before backend work.
+- Do not commit:
+  - `backend/.venv/`
+  - `backend/.env`
+  - `frontend/node_modules/`
+- Ensure PostgreSQL is running before running migrations.
 
-------------------------------------------------------------------------
+---
 
 # Common Issues
 
 ### ModuleNotFoundError
 
--   Ensure virtual environment is activated.
--   Re-run:
+- Ensure virtual environment is activated.
+- Re-run:
 
-``` bash
+```bash
 pip install -r requirements.txt
 ```
 
 ### Database Connection Errors
 
--   Confirm PostgreSQL is running.
--   Verify `.env` values match your local database configuration.
+- Confirm PostgreSQL is running.
+- Verify `.env` values match your local database configuration.
 
-------------------------------------------------------------------------
+---
 
 # Initial API Endpoint
 
@@ -248,7 +250,7 @@ Authentication endpoint:
 
 Example request body:
 
-``` json
+```json
 {
   "username": "your_username",
   "password": "your_password"
