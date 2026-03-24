@@ -14,6 +14,7 @@ export default function TemplateViewer({
   onChange,
   reviewState,
   onReviewStateChange,
+  versionLabel,
 }) {
   const editorRef = useRef(null);
 
@@ -64,9 +65,9 @@ export default function TemplateViewer({
               </div>
 
               <div className="mt-1 text-sm font-semibold text-gray-600">
-                Version: 1.2{" "}
+                Version: {versionLabel || "Unknown"}{" "}
                 <span className="text-xs font-light">
-                  (add actual versioning tracking once it pulls from DB)
+                  (loaded from backend)
                 </span>
               </div>
             </div>
