@@ -8,12 +8,19 @@ const BASE_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
  */
 
 export async function apiRequest(path, options = {}) {
+  const token = localStorage.getItem('access_token');
+  const headers = {
+    "Content-Type": "application/json",
+    ...(options.headers || {}),
+  };
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
   const response = await fetch(`${BASE_URL}${path}`, {
     credentials: "include", // future-proof for session auth
-    headers: {
-      "Content-Type": "application/json",
-      ...(options.headers || {}),
-    },
+    headers,
     ...options,
   });
 
