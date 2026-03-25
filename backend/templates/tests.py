@@ -21,7 +21,7 @@ class APIConnectivityTests(APITestCase):
             username='reviewer_test', password='password123'
         )
 
-        # Ensure profiles exist (avoid signal issues)
+        # Ensure profiles exist
         Profile.objects.get_or_create(user=self.author_user)
         Profile.objects.get_or_create(user=self.reviewer_user)
 
@@ -37,7 +37,7 @@ class APIConnectivityTests(APITestCase):
         self.template_url = reverse('json_template-list')
         self.decision_url = reverse('review_decision-list')
 
-    # ✅ Helper method (NOT a test)
+    # Helper method
     def get_token(self, username, password):
         response = self.client.post(self.token_url, {
             'username': username,
@@ -90,14 +90,14 @@ class APIConnectivityTests(APITestCase):
             requester=self.author_user
         )
 
-        # ❌ Author should fail
+        # Should fail
         response = self.client.post(self.decision_url, {
             'review_request': review_request.id,
             'status': 'ACCEPTED'
         })
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-        # ✅ Switch to reviewer
+        # Switch to reviewer
         self.client.credentials()  # clear auth
         self.authenticate('reviewer_test', 'password123')
 
