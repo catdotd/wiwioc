@@ -1,16 +1,9 @@
 // frontend/src/layout/Layout.jsx
 import React from "react";
 import { useAuth } from "../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 
 export default function Layout({ title, navItems, activeKey, children }) {
   const { user, logout } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = async () => {
-    await logout();
-    navigate("/login");
-  };
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
@@ -45,16 +38,13 @@ export default function Layout({ title, navItems, activeKey, children }) {
             </nav>
 
             {user && (
-              <div className="flex items-center gap-3 border-l border-gray-200 pl-4">
-                <div className="text-sm">
-                  <div className="font-medium">{user.username}</div>
-                  <div className="text-gray-500 capitalize">
-                    {user.profile?.role || 'User'}
-                  </div>
-                </div>
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-gray-600">
+                  Welcome, {user.username || user.email}
+                </span>
                 <button
-                  onClick={handleLogout}
-                  className="rounded-xl border border-red-200 bg-white px-3 py-1.5 text-sm text-red-600 hover:bg-red-50"
+                  onClick={logout}
+                  className="rounded-xl border border-gray-200 bg-white px-3 py-1.5 text-sm hover:bg-gray-50"
                 >
                   Logout
                 </button>
