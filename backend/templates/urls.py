@@ -9,7 +9,7 @@ from .views import (
 )
 
 router = DefaultRouter()
-router.register(r'templates', JSONTemplateViewSet)
+router.register(r'templates', JSONTemplateViewSet, basename="templates")
 router.register(r'versions', JSONVersionViewSet)
 router.register(r'comments', CommentViewSet)
 router.register(r'review-requests', ReviewRequestViewSet)

@@ -19,6 +19,12 @@ export async function fetchTemplateById(id) {
   });
 }
 
+export async function fetchTemplateViewerData(id) {
+  return apiRequest(`/api/templates/${id}/viewer-data/`, {
+    method: "GET",
+  });
+}
+
 export async function submitReview(templateId, payload) {
   return apiRequest(`/api/templates/${templateId}/review/`, {
     method: "POST",
