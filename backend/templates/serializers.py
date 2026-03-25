@@ -62,3 +62,4 @@ class JSONTemplateSerializer(serializers.ModelSerializer):
     class Meta:
         model = JSON_Template
         fields = ['id', 'name', 'owner', 'owner_detail', 'created_at', 'versions']
+        read_only_fields = ["owner"]
