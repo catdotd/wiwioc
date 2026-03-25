@@ -1,10 +1,12 @@
 // frontend/src/pages/Login.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../api/auth";
+import { login as apiLogin } from "../api/auth";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function Login() {
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -17,22 +19,14 @@ export default function Login() {
         setError(null);
 
         try {
-            await login(username, password);
-
-            // If backend succeeds, navigate normally
+            const response = await apiLogin(username, password);
+            // Set user in auth context
+            login(response.user);
+            // Navigate to home
             navigate("/");
         } catch (err) {
-            console.warn("Login stub fallback:", err.message);
-
-            // TEMPORARY: allow navigation even while backend not ready yet
-            // To be replaced with:
-            // setError("Invalid credentials");
-
-            navigate("/");
-
-            // IMPORTANT: Later, remove the above line and use:
-            // setError("Invalid credentials");
-
+            // Show error message to user
+            setError("Invalid credentials. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -48,6 +42,7 @@ export default function Login() {
                     placeholder="Username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
+                    required
                     className="w-full border rounded px-3 py-2"
                 />
 
@@ -56,6 +51,7 @@ export default function Login() {
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    required
                     className="w-full border rounded px-3 py-2"
                 />
 

@@ -1,7 +1,17 @@
 // frontend/src/layout/Layout.jsx
 import React from "react";
+import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Layout({ title, navItems, activeKey, children }) {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login");
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
       <header className="sticky top-0 z-50 border-b border-gray-200 bg-white">
@@ -13,25 +23,44 @@ export default function Layout({ title, navItems, activeKey, children }) {
             </div>
           </div>
 
-          <nav className="flex flex-wrap items-center gap-2">
-            {navItems.map((it) => {
-              const active = activeKey === it.key;
-              return (
+          <div className="flex items-center gap-4">
+            <nav className="flex flex-wrap items-center gap-2">
+              {navItems.map((it) => {
+                const active = activeKey === it.key;
+                return (
+                  <button
+                    key={it.key}
+                    onClick={it.onClick}
+                    className={[
+                      "rounded-xl border px-3 py-1.5 text-sm",
+                      active
+                        ? "border-gray-900 bg-gray-900 text-white"
+                        : "border-gray-200 bg-white hover:bg-gray-50",
+                    ].join(" ")}
+                  >
+                    {it.label}
+                  </button>
+                );
+              })}
+            </nav>
+
+            {user && (
+              <div className="flex items-center gap-3 border-l border-gray-200 pl-4">
+                <div className="text-sm">
+                  <div className="font-medium">{user.username}</div>
+                  <div className="text-gray-500 capitalize">
+                    {user.profile?.role || 'User'}
+                  </div>
+                </div>
                 <button
-                  key={it.key}
-                  onClick={it.onClick}
-                  className={[
-                    "rounded-xl border px-3 py-1.5 text-sm",
-                    active
-                      ? "border-gray-900 bg-gray-900 text-white"
-                      : "border-gray-200 bg-white hover:bg-gray-50",
-                  ].join(" ")}
+                  onClick={handleLogout}
+                  className="rounded-xl border border-red-200 bg-white px-3 py-1.5 text-sm text-red-600 hover:bg-red-50"
                 >
-                  {it.label}
+                  Logout
                 </button>
-              );
-            })}
-          </nav>
+              </div>
+            )}
+          </div>
         </div>
       </header>
 
